@@ -1,7 +1,6 @@
 import fs from "fs";
 import path from "path";
 import { dirname } from "path";
-import { json } from "stream/consumers";
 import { fileURLToPath } from "url";
 
 export const getAllProducts = async (req, res) => {
@@ -65,7 +64,7 @@ export const getProduct = async (req, res) => {
   try {
     const __dirname = dirname(fileURLToPath(import.meta.url));
     const product = req.params.product;
-    
+
     const fileContent = await new Promise((resolve, reject) => {
       return fs.readFile(path.join(__dirname + "/database.json"), { encoding: "utf8" }, (err, data) => {
         if (err) {
@@ -78,11 +77,11 @@ export const getProduct = async (req, res) => {
     // console.log(category);
 
     const data = JSON.parse(fileContent);
-   data.map((el)=>{
-    if(Number(el.id) === Number(product)){
-      res.send(el)
-    }
-   })
+    data.map((el) => {
+      if (Number(el.id) === Number(product)) {
+        res.send(el);
+      }
+    });
     // console.log(categoryProducts);
   } catch (error) {
     console.log(error);
