@@ -1,7 +1,8 @@
 import { useSelector, useDispatch } from "react-redux";
-import { fetchLocal, fetchProducts, getBasket, deleteBasket } from "../store/productsSlice";
-import { useEffect, useState } from "react";
+import { fetchProducts, getBasket, deleteBasket } from "../store/productsSlice";
+import { useEffect } from "react";
 import axios from "../axios";
+import { Link } from "react-router";
 
 function BasketCards() {
   const { products } = useSelector((state) => state.data);
@@ -26,7 +27,7 @@ function BasketCards() {
     const phone = formData.get("phoneNumber");
     const email = formData.get("email");
 
-    console.log(name, surname, phone, email, sum);
+   
     axios
       .post("/application", {
         firstName: name,
@@ -43,9 +44,7 @@ function BasketCards() {
         console.log(error);
       });
 
-    // axios.post("/application",{
-    //   firstname
-    // });
+
   };
 
   return (
@@ -61,11 +60,16 @@ function BasketCards() {
                       sum = sum + Number(item.price);
                       return (
                         <article className="basket__cards__card" id={item.id} key={item.id}>
-                          <div className="basket__cards__card_imgBox" style={{ backgroundImage: `url(${item.image})`, backgroundSize: "contain" }}></div>
+                          <Link to={`/catalog/${item.category}/${item.title}`} state={{ id: item.id }} className="basket__cards__card_tabletStyle">
+                            <div className="basket__cards__card_imgBox" style={{ backgroundImage: `url(${item.image})`, backgroundSize: "contain" }}></div>
+                          </Link>
+
                           <article className="basket__cards__card__text">
                             <h3 className="basket__cards__card__text_title">{item.title}</h3>
                             <p className="basket__cards__card__text_price">{item.price}$</p>
-                            <button onClick={(e) => deleteProduct(e.target)}>Delete</button>
+                            <button className="basket__cards__card__text_deleteBnt" onClick={(e) => deleteProduct(e.target)}>
+                              Delete
+                            </button>
                           </article>
                         </article>
                       );
